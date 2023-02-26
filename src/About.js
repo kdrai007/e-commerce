@@ -2,9 +2,12 @@ import React from "react";
 import HeroSection from "./components/HeroSection";
 
 const About = () => {
+  const data = {
+    name: "Rai Ecommerce",
+  };
   return (
     <div>
-      <HeroSection name="Rai Ecommerce" />
+      <HeroSection data={data} />
     </div>
   );
 };

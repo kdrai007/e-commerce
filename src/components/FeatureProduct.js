@@ -1,15 +1,30 @@
 import React from "react";
 import styled from "styled-components";
-import { useFilterContext } from "./context/filter_context";
-const Products = () => {
-  const { filter_Products } = useFilterContext();
-  console.log(filter_Products);
+import { useProductContext } from "../context/productcontext";
+import Product from "./Product";
+
+const FeatureProduct = () => {
+  const { isLoading, featureProduct } = useProductContext();
+
+  if (isLoading) {
+    return <div>....isLoading</div>;
+  }
+
   return (
     <Wrapper className="section">
-      <div className="container">product page</div>
+      <div className="container">
+        <div className="intro-data">check now</div>
+        <div className="common-heading">Our Feature Service</div>
+        <div className="grid grid-three-column">
+          {featureProduct.map((product) => {
+            return <Product key={product.id} {...product} />;
+          })}
+        </div>
+      </div>
     </Wrapper>
   );
 };
+
 const Wrapper = styled.section`
   padding: 9rem 0;
   background-color: ${({ theme }) => theme.colors.bg};
@@ -97,14 +112,6 @@ const Wrapper = styled.section`
       }
     }
   }
-  .grid-filter-column {
-    grid-template-columns: 0.2fr 1fr;
-  }
-
-  @media (max-width: ${({ theme }) => theme.media.mobile}) {
-    .grid-filter-column {
-      grid-template-columns: 1fr;
-    }
-  }
 `;
-export default Products;
+
+export default FeatureProduct;

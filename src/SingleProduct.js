@@ -1,8 +1,109 @@
+// import { useEffect } from "react";
 import styled from "styled-components";
+import { useParams } from "react-router-dom";
+import { useEffect } from "react";
+import { useProductContext } from "./context/productcontext";
+import PageNavigation from "./components/PageNavigation";
+import { Container } from "./styles/Container";
+import MyImage from "./components/MyImage";
+import ConvertCurrency from "./helpers/ConvertCurrency";
+import { MdSecurity } from "react-icons/md";
+import { TbTruckDelivery, TbReplace } from "react-icons/tb";
+import Star from "./components/Star";
+import AddToCart from "./components/AddToCart";
+const SingleProduct = () => {
+  const { singleProduct, SingleProductApi, API, isSingleLoading } =
+    useProductContext();
+  const {
+    name,
+    company,
+    price,
+    description,
+    // category,
+    stock,
+    reviews,
+    stars,
+    image,
+  } = singleProduct;
+  // console.log(colors);
+  let { id } = useParams();
+  useEffect(() => {
+    SingleProductApi(`${API}?id=${id}`);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  if (isSingleLoading) {
+    return <div>...loading</div>;
+  }
+  return (
+    <Wrapper>
+      <PageNavigation name={name} />
+      <Container className="container">
+        <div className="grid grid-two-column">
+          <div className="product-image">
+            <MyImage imgs={image} />
+          </div>
+          {/* Product Data */}
+          <div className="product-data">
+            <h2>{name}</h2>
+            <Star stars={stars} reviews={reviews} />
+            <p className="product-data-price">
+              MRP:
+              <del>
+                <ConvertCurrency price={price + 25000} />
+              </del>
+            </p>
+            <p className="product-data-price product-data-real-price">
+              Deal of the day: <ConvertCurrency price={price} />
+            </p>
+            <p>{description}</p>
+            <div className="product-data-warranty">
+              <div className="product-warranty-data">
+                <TbTruckDelivery className="warranty-icon" />
+                <p>Free Delivery</p>
+              </div>
 
+              <div className="product-warranty-data">
+                <TbReplace className="warranty-icon" />
+                <p>30 Days Replacement</p>
+              </div>
+
+              <div className="product-warranty-data">
+                <TbTruckDelivery className="warranty-icon" />
+                <p>Item Delivered </p>
+              </div>
+
+              <div className="product-warranty-data">
+                <MdSecurity className="warranty-icon" />
+                <p>2 Year Warranty </p>
+              </div>
+            </div>
+            <div className="product-data-info">
+              <p>
+                Available:
+                <span> {stock > 0 ? "In Stock" : "Not Available"}</span>
+              </p>
+              <p>
+                ID : <span> {id} </span>
+              </p>
+              <p>
+                Brand :<span> {company} </span>
+              </p>
+            </div>
+            <hr />
+            {stock > 0 && <AddToCart product={singleProduct} />}
+          </div>
+        </div>
+      </Container>
+    </Wrapper>
+  );
+};
 const Wrapper = styled.section`
   .container {
     padding: 9rem 0;
+  }
+  .product-image {
+    display: flex;
+    align-items: center;
   }
   .product-data {
     display: flex;
@@ -72,8 +173,4 @@ const Wrapper = styled.section`
     padding: 0 2.4rem;
   }
 `;
-const SingleProduct = () => {
-  return <Wrapper></Wrapper>;
-};
-
 export default SingleProduct;

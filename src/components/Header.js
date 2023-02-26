@@ -22,8 +22,9 @@ const MainHeader = styled.header`
   justify-content: space-between;
   align-items: center;
   position: relative;
+
   .logo {
-    height: 5rem;
+    height: 6rem;
   }
 `;
 export default Header;
