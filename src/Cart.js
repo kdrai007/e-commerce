@@ -1,7 +1,66 @@
 import styled from "styled-components";
+import { useCartContext } from "./context/cart_context";
+import CartItem from "./components/CartItem";
+import { Button } from "./styles/Button";
+import { NavLink } from "react-router-dom";
+import ConvertCurrency from "./helpers/ConvertCurrency";
 
 const Cart = () => {
-  return <Wrapper></Wrapper>;
+  const { cart, clearCart, total_price, shipping_fee } = useCartContext();
+  return (
+    <Wrapper>
+      <div className="container">
+        <div className="cart-heading grid grid-five-column">
+          <p>Item</p>
+          <p className="cart-hide">price</p>
+          <p>Quantity</p>
+          <p className="cart-hide">Subtotal</p>
+          <p>Remove</p>
+        </div>
+        <hr />
+        <div className="cart-item">
+          {cart &&
+            cart.map((currElem) => {
+              return <CartItem key={currElem.id} {...currElem} />;
+            })}
+        </div>
+        <hr />
+        <div className="cart-two-button">
+          <NavLink to="/products">
+            <Button>Continue Shopping</Button>
+          </NavLink>
+          {cart.length > 0 && (
+            <Button className="btn-clear" onClick={clearCart}>
+              Clear Cart
+            </Button>
+          )}
+        </div>
+        <div className="order-total--amount">
+          <div className="order-total--subdata">
+            <div>
+              <p>subtotal:</p>
+              <p>
+                <ConvertCurrency price={total_price} />
+              </p>
+            </div>
+            <div>
+              <p>shipping fee:</p>
+              <p>
+                <ConvertCurrency price={shipping_fee} />
+              </p>
+            </div>
+            <hr />
+            <div>
+              <p>Order Total:</p>
+              <p>
+                <ConvertCurrency price={shipping_fee + total_price} />
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Wrapper>
+  );
 };
 
 const Wrapper = styled.section`
@@ -14,6 +73,7 @@ const Wrapper = styled.section`
   .grid-five-column {
     grid-template-columns: repeat(4, 1fr) 0.3fr;
     text-align: center;
+    align-items: center;
     align-items: center;
   }
   .cart-heading {

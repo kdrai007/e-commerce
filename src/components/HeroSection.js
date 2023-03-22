@@ -17,7 +17,7 @@ const HeroSection = ({ data }) => {
               similique vel sunt dolorum enim exercitationem dolore magni.
               Asperiores earum magnam error necessitatibus! Error?
             </p>
-            <NavLink>
+            <NavLink to="/products">
               <Button>Shop Now</Button>
             </NavLink>
           </div>

@@ -4,18 +4,17 @@ import styled from "styled-components";
 import ToggleCartItem from "./ToggleCartItem";
 import { FaCheck } from "react-icons/fa";
 import { Button } from "../styles/Button";
+import { useCartContext } from "../context/cart_context";
 
 const AddToCart = ({ product }) => {
+  const { addToCart } = useCartContext();
   const { colors, stock, id } = product;
   const [color, setColor] = useState(colors[0]);
   const [amount, setAmount] = useState(1);
   function increaseAmount() {
-    console.log("increaseAmount");
     amount < stock ? setAmount(amount + 1) : setAmount(amount);
   }
   function decreaseAmount() {
-    console.log("decreaseAmount");
-
     amount > 1 ? setAmount(amount - 1) : setAmount(amount);
   }
   return (
@@ -43,7 +42,12 @@ const AddToCart = ({ product }) => {
         amount={amount}
       />
       <NavLink to="/cart">
-        <Button className="btn">Add to Cart</Button>
+        <Button
+          className="btn"
+          onClick={() => addToCart(id, color, amount, product)}
+        >
+          Add to Cart
+        </Button>
       </NavLink>
     </Wrapper>
   );
